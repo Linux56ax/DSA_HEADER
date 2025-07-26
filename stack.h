@@ -2,6 +2,9 @@
 #include <stdlib.h> // For malloc and free
 #define Max 2
 
+#ifndef STACK_H
+#define STACK_H
+
 // Structure defining 
 typedef struct stack
 {
@@ -70,45 +73,5 @@ int pop(stack *s)
     return n;
 }
 
-// Main Function 
-int main()
-{
-    stack s;
-    int capacity = Max;
-    init_stack(&s, capacity);
+#endif // STACK_H
 
-    printf("To push the element press 1\nTo Pop the element press 2\nTo see the peak of the stack press 3\n");
-    int elem = 0, choice = 0;
-set:
-    printf("Enter your choice\n");
-    scanf("%d", &choice);
-    while (1)
-    {
-        switch (choice)
-        {
-            case 1:
-                printf("Enter the element to push\n");
-                scanf("%d", &elem);
-                push(&s, elem);
-                printf("Element Pushed\n");
-                goto set;
-            case 2:
-                if (isempty(&s))
-                {
-                    printf("Stack is empty\n");
-                    goto set;
-                }
-                printf("The popped element is %d\n", pop(&s));
-                goto set;
-            case 3:
-                printf("The top of the stack is %d\n", peak(&s));
-                goto set;
-            default:
-                printf("Wrong Choice\n");
-                goto set;
-        }
-    }
-
-    free_stack(&s);
-    return 0;
-}
