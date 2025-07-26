@@ -1,136 +1,114 @@
 #include <stdio.h>
+#include <stdlib.h> // For malloc and free
 #define Max 2
 
-//Structure defining 
+// Structure defining 
 typedef struct stack
 {
-   int ar[Max];
-   int top; /* data */
+   int *ar;   // Change from int ar[Max]; to int *ar;
+   int top;
+   int capacity; // Store the capacity
 } stack;
 
-//Top of stack
-void top(stack *s)
+// Initialize stack
+void init_stack(stack *s, int capacity)
 {
-    s-> top=-1;
+    s->ar = (int *)malloc(capacity * sizeof(int));
+    s->top = -1;
+    s->capacity = capacity;
 }
 
-//s Empty Function
+// Free stack memory
+void free_stack(stack *s)
+{
+    free(s->ar);
+}
+
+// Is Empty Function
 int isempty(stack *s)
 {
-    return s-> top==-1;
+    return s->top == -1;
 }
 
-//Is Full Function 
+// Is Full Function 
 int isfull(stack *s)
 {
-    return s-> top == Max-1;
+    return s->top == s->capacity - 1;
 }
 
-//Peak
+// Peak
 int peak(stack *s)
 {   
     if (isempty(s))
     {
         printf("Stack is empty\n");
-        return -1; // Return an invalid value or handle error appropriately
+        return -1;
     }
-    return(s->ar[s->top]);
+    return s->ar[s->top];
 }
 
-
-//Push Function
+// Push Function
 void push(stack *s, int item)
 {
     if (isfull(s))
-        {
-            printf("Full");
-            return;
-        }
-    s->ar[++(s->top)]=item;
+    {
+        printf("Full\n");
+        return;
+    }
+    s->ar[++(s->top)] = item;
 }
 
-
-//Pop Function
+// Pop Function
 int pop(stack *s)
 {
-    if(isempty(s))
-        {
-            printf("Empty");
-            return 99999;
-        }
-    int n=s->ar[(s->top)--];
+    if (isempty(s))
+    {
+        printf("Empty\n");
+        return 99999;
+    }
+    int n = s->ar[(s->top)--];
     return n;
 }
 
-
-
-//Is look
-/*int islook(stack *s)
-{
-    while(!isempty(*s))
-    {
-        pop(*s);
-    }
-}*/
-
-//Stack push elem
-/*int ispush(stack *s)
-{   
-    int elem=0;
-    while(!isfull)
-    {
-        scanf("%d",&elem);
-        push(*s , elem);
-    }
-}*/
-
-// Main Funmction 
+// Main Function 
 int main()
 {
     stack s;
-    top(&s);
-    printf("To push the element press 1\n and to Pop the element press 2\n and to see the peak of the stack press 3\n");
-    int elem=0, choice=0;
-    //Menu driven Program to push and pop elements
-    set:
+    int capacity = Max;
+    init_stack(&s, capacity);
+
+    printf("To push the element press 1\nTo Pop the element press 2\nTo see the peak of the stack press 3\n");
+    int elem = 0, choice = 0;
+set:
     printf("Enter your choice\n");
-    scanf("%d",&choice);
-    while(!isfull(&s)||1)
+    scanf("%d", &choice);
+    while (1)
     {
-        switch(choice)
+        switch (choice)
         {
             case 1:
-            {
-                printf("Enter the elemrnt to push\n");
-                scanf("%d",&elem);
-                push(&s,elem);
+                printf("Enter the element to push\n");
+                scanf("%d", &elem);
+                push(&s, elem);
                 printf("Element Pushed\n");
                 goto set;
-            }
             case 2:
-                {
-            if(isempty(&s))
+                if (isempty(&s))
                 {
                     printf("Stack is empty\n");
                     goto set;
                 }
-            printf("The popped element is %d\n", pop(&s));
-            goto set;
-                }
+                printf("The popped element is %d\n", pop(&s));
+                goto set;
             case 3:
-            {
                 printf("The top of the stack is %d\n", peak(&s));
                 goto set;
-            }
             default:
-                {
-            printf("Wrong Choice\n");
-            goto set;
-                }
+                printf("Wrong Choice\n");
+                goto set;
         }
     }
-    
 
-
-
+    free_stack(&s);
+    return 0;
 }
