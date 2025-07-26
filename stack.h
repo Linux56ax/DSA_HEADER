@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h> // For malloc and free
-#define Max 2
 
 #ifndef STACK_H
 #define STACK_H
